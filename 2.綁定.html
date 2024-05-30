@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2. 綁定屬性</title>
+    <style>
+        .text-red {
+            color: red;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-bind: (簡寫為:) 綁定標籤的屬性 -->
+        <img v-bind:src="img" height="100">
+        <img :src="img" height="100">
+
+        <br>
+
+        <a :href="link.url">{{link.text}}</a>
+
+        <br>
+
+        <!-- style的綁定 -->
+        <p :style="textStyle">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam, magni?</p>
+        <!-- 另一種寫法 -->
+        <p :style="{
+            color:textColor,
+            textAlign,
+            fontStyle: num===10? 'italic':'normal'
+            }">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam, magni?
+        </p>
+
+        <br>
+        <!-- 綁定class -->
+        <p :class="textClassArray">Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, corporis.</p>
+        <p :class="textClassObj">Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, corporis.</p>
+    </div>
+
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js
+        integrity="sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    num: 10,
+                    img: 'https://github.com/vuejs.png',
+                    link: {
+                        url: 'https://x.com',
+                        text: 'Twitter'
+                    },
+                    textStyle: {
+                        color: 'lightblue',
+
+                        // 要改為駝峰式命名
+                        textAlign: 'center',
+                        // 或是用''框起來
+                        'background-color': 'gray'
+                    },
+                    textColor: 'pink',
+                    textAlign: 'right',
+
+                    // 陣列裡的class都會套用
+                    textClassArray: ['text-red', 'text-center'],
+                    // 物件只有值為true的class會被套用
+                    textClassObj: {
+                        'text-red': true,
+                        'text-center': false
+                    },
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

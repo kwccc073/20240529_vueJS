@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>練習：製作一個購物清單</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 用form包起來就可以用@submit.prevent，使不要執行預設的跳頁動作，而執行我要的動作(addItem) -->
+        <form @submit.prevent="addItem">
+            <input type="text" v-model="input" :style="{border: inputBorder}">
+            <input type="submit" value="新增">
+        </form>
+        <hr>
+
+        <!-- 搜尋功能 -->
+        搜尋：<input type="text" v-model="search">
+
+        <hr>
+        <!-- 列表 -->
+        <ul>
+            <li v-for="(item,i) in filteredItems">
+                <input type="checkbox" v-model="item.done">
+                <!--  另一種寫法：點擊時，把完成狀態倒過來 -->
+                <!-- <input type="checkbox" @input="item.done = !item.done" :checked="item.done"> -->
+
+                <!-- 打勾會出現刪除線 -->
+                <del v-if="item.done">{{item.text}}</del>
+                <!-- 不打勾則無刪除線 -->
+                <span v-else>{{item.text}}</span>
+
+                <!-- 刪除功能 -->
+                <input type="button" value="刪除" @click="delItem(i)">
+            </li>
+        </ul>
+    </div>
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js
+        integrity="sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    items: [],
+                    input: '',
+                    search: '',
+                    id: 1,
+                }
+            },
+            // 正在輸入的狀態下執行
+            computed: {
+                inputBorder() {
+                    if (this.input.length === 0) return '5px solid black'
+                    else if (this.input.length < 2) return '5px solid red'
+                    else return '5px solid green'
+                },
+                // 搜尋功能
+                // 過濾所有清單的東西
+                filteredItems() {
+                    // .filter()執行裡面程式碼來過濾，
+                    // 將true的東西留下來，false丟掉
+                    return this.items.filter(item => {
+                        return item.text.includes(this.search)
+                    })
+                }
+            },
+            methods: {
+                addItem() {
+                    // 大於兩個字才執行
+                    if (this.input.length < 2) return
+                    // done:表示完成狀態，預設是沒有完成
+                    // id: this.id++使每個東西都有自己的id
+                    this.items.push({ done: false, text: this.input, id: this.id++ })
+                    // 清空
+                    this.input = ''
+                },
+                delItem(id) {
+                    // 陣列每個東西都執行這個function，回傳第一個為true的值之索引
+                    const i = this.items.findIndex(item => {
+                        return item.id === id
+                    })
+                    // .splice(i,1)從索引i刪除一個元素
+                    this.items.splice(i, 1)
+                }
+            },
+            watch: {
+                // 監聽陣列變更的時候
+                items: {
+                    handler(newValue, oldValue) {
+                        console.log(newValue, oldValue)
+                        localStorage.vueTodo = JSON.stringify(newValue)
+                    },
+                    //陣列或物件的深層監聽
+                    //設定 deep: true時，new和old都一樣
+                    deep: true
+                }
+            },
+            mouted() {
+                // JSON.parse()將收到的 JSON 格式轉為JS物件或陣列
+                /* localStorage.vueTodo || '[]'
+                先會從 localStorage 中讀取名為 vueTodo 的資料，
+                若有，則將其進行JSON.parse()
+                若無，則會使用空陣列 [] 作為預設值。
+                */
+                const items = JSON.parse(localStorage.vueTodo || '[]')
+                // 將上方的items值賦給Vue的data(){}裡面的items
+                this.items = items
+                if (this.items.length > 0) {
+                    // 作用是避免id重複
+                    this.id = this.items[this.items.length - 1].id + 1
+                }
+            }
+        }).mount('#app')
+
+
+    </script>
+</body>
+
+</html>

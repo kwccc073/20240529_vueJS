@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5.</title>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" :value="num" @click="num++">
+        <br>
+        姓：<input type="text" v-model="lastName">
+        <br>
+        名：<input type="text" v-model="firstName">
+        <br>
+        <!-- {{fullNameMathod()}} 等於 {{lastName + firstName}} -->
+        全名：{{fullName}} {{fullNameMathod()}} {{lastName + firstName}}
+    </div>
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js
+        integrity="sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    firstName: '',
+                    lastName: '',
+                    num: 0
+                }
+            },
+            // computed 是將現有資料經過function計算得到動態資料
+            // 只有用到的值有變動，computed才會執行
+            computed: {
+                fullName() {
+                    console.log('computed 更新')
+                    return this.lastName + this.firstName
+                }
+            },
+            methods: {
+                //只要data()裡面有東西變動，methods就會執行（效能較差）
+                fullNameMathod() {
+                    console.log('methods 更新')
+                    return this.lastName + this.firstName
+                }
+            },
+            // watch用於偵測指定的data變化
+            // 直接把data名稱當function名稱去用
+            // function會提供兩參數：修改後(newValue)、修改前(oldValue)
+            watch: {
+                firstName(newValue, oldValue) {
+                    console.log(`firstName:${oldValue} --> ${newValue}`)
+                },
+                // 另一種寫法
+                lastName: {
+                    handler(newValue, oldValue) {
+                        console.log(`firstName:${oldValue} --> ${newValue}`)
+                    },
+                    // once: true 表示只監聽一次
+                    once: true,
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>

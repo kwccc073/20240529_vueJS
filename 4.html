@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4.事件</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- v-on:click="notify"是呼叫notify()的方法 -->
+        <input type="button" value="notify" v-on:click="notify">
+        <!-- 另一種寫法 -->
+        <input type="button" value="notify" @click="notify">
+
+
+        <!-- 這個寫法，下面無法直接使用event -->
+        <input type="button" value="notify2('456')" @click="notify2('456')">
+        <!-- 要先用$event來代表事件 -->
+        <input type="button" value="notify3('789')" @click="notify3('789',$event)">
+
+        <br>
+        <!-- 其他寫法(不用記) -->
+        <input type="button" value="" @click="event => notify(event)">
+        <input type="button" value="" @click="() => notify2('456')">
+        <input type="button" value="" @click="event => notify3('789',event)">
+
+        <br>
+        <!-- .once只能觸發一次 -->
+        <input type="button" value="notify(once)" @click.once="notify">
+        <!-- .left .right .middle是指定滑鼠的按鍵 -->
+        <input type="button" value="notify(right)" @click.right="notify">
+
+        <br>
+        <!-- 
+            .prevent => event.prevent() 阻止瀏覽器執行事件的預設行為
+            .stop => event.stopPropagation()
+         -->
+        <a href="https://x.com" @click.prevent="notify">X</a>
+
+        <hr>
+
+        <!-- @keydown.enter為按下enter鍵要執行的 -->
+        <input type="text" v-model="input" @keydown.enter="add">
+        <ul>
+            <li v-for="item in list">{{item}}</li>
+        </ul>
+    </div>
+
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js
+        integrity="sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    input: '',
+                    list: []
+                }
+            },
+            // method:{}裡面放這個vue會用到的function
+            // 注意：method和data()同一層
+            methods: {
+                notify() {
+                    // 因為上面(13、15行)直接把function名稱放在事件哩，所以可以直接用event
+                    console.log(event)
+                    alert('123')
+                },
+                notify2(text) {
+                    alert(text)
+                },
+                notify3(text, event) {
+                    console.log(event)
+                    alert(text)
+                },
+                add() {
+                    if (this.input.length === 0) return
+                    // .push()用於將一個或多個元素添加到陣列的末尾
+                    this.list.push(this.input)
+                    this.notify2(this.input)
+                    this.input = ''
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+
+</html>
