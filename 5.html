@@ -56,13 +56,16 @@
                 // 另一種寫法
                 lastName: {
                     handler(newValue, oldValue) {
-                        console.log(`firstName:${oldValue} --> ${newValue}`)
+                        console.log(`lastName:${oldValue} --> ${newValue}`)
                     },
                     // once: true 表示只監聽一次
                     once: true,
                 }
             }
         }).mount('#app')
+
+
+
     </script>
 </body>
 

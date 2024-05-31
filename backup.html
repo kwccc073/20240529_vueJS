@@ -21,6 +21,36 @@
                 }
             }
         }).mount('#app')
+
+
+
+        // 選項式API架構
+        Vue.createApp({
+            data() {
+                return {
+                    data1: '',
+                    data2: [{}, {}, {}],
+                }
+            },
+            computed: {
+                fuction11() { },
+                fuction12() { },
+            },
+            methods: {
+                fuction21() { },
+                fuction22() { },
+            },
+            watch: {
+                data1(newValue, oldValue) { },
+                data2(newValue, oldValue) { },
+            },
+            created() {
+                // 欲執行的JS
+            },
+            mounted() {
+                // 欲執行的JS
+            }
+        }).mount('#app')
     </script>
 </body>
 
