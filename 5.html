@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5.</title>
+    <title>5. 計算屬性(computed) & 資料監聽(watch)</title>
 </head>
 
 <body>
@@ -15,7 +15,10 @@
         <br>
         名：<input type="text" v-model="firstName">
         <br>
-        <!-- {{fullNameMathod()}} 等於 {{lastName + firstName}} -->
+        <!-- 比較computed和methods---------------------------------------------------------------------- -->
+        <!-- 只有fullName有用到的data有更新時， {{fullName}}才會重新渲染-->
+        <!-- {{fullNameMathod()}} 和 {{lastName + firstName}}意思一樣
+            當data有任何東西改變時，{{fullNameMathod()}}和{{lastName + firstName}}都會重新渲染 -->
         全名：{{fullName}} {{fullNameMathod()}} {{lastName + firstName}}
     </div>
 
@@ -31,8 +34,8 @@
                     num: 0
                 }
             },
-            // computed 是將現有資料經過function計算得到動態資料
-            // 只有用到的值有變動，computed才會執行
+            // computed 是將現有資料(date)經過計算得到的動態"變數"，是readonly
+            // 只有用到的data有變動時，computed才會執行（效能較好）
             computed: {
                 fullName() {
                     console.log('computed 更新')
@@ -40,26 +43,28 @@
                 }
             },
             methods: {
-                //只要data()裡面有東西變動，methods就會執行（效能較差）
+                //只要data裡面有任何東西變動，methods就會執行（效能較差）
                 fullNameMathod() {
                     console.log('methods 更新')
                     return this.lastName + this.firstName
                 }
             },
-            // watch用於偵測指定的data變化
-            // 直接把data名稱當function名稱去用
-            // function會提供兩參數：修改後(newValue)、修改前(oldValue)
+            // watch： 當data有變化時，要執行的程式碼-------------------------------------------
+            // function有兩參數可以用：修改後(newValue)、修改前(oldValue)
+            // watch預設是淺層監聽：當物件/陣列有多層，只會偵測第一層，若要偵測多層須設定 deep:true
             watch: {
+                // 寫法一：把data名稱當function名稱---------------------
                 firstName(newValue, oldValue) {
                     console.log(`firstName:${oldValue} --> ${newValue}`)
                 },
-                // 另一種寫法
+                // 寫法二：把data名稱當作物件的key---------------------
+                // funtion部分固定寫handler{}，另外可以加上once等設定
                 lastName: {
+                    // handler(){}是固定寫法，是處理變更的function
                     handler(newValue, oldValue) {
                         console.log(`lastName:${oldValue} --> ${newValue}`)
                     },
-                    // once: true 表示只監聽一次
-                    once: true,
+                    once: true, // 表示只監聽一次
                 }
             }
         }).mount('#app')

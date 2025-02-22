@@ -9,11 +9,10 @@
 
 <body>
     <div id="app">
-        <!-- v-on:click="notify"是呼叫notify()的方法 -->
+        <!-- v-on:click="notify"是呼叫notify()的方案：當click時執行notify() -->
         <input type="button" value="notify" v-on:click="notify">
-        <!-- 另一種寫法 -->
+        <!-- v-on: 簡寫為 @ -->
         <input type="button" value="notify" @click="notify">
-
 
         <!-- 這個寫法，下面無法直接使用event -->
         <input type="button" value="notify2('456')" @click="notify2('456')">
@@ -21,26 +20,28 @@
         <input type="button" value="notify3('789')" @click="notify3('789',$event)">
 
         <br>
+
         <!-- 其他寫法(不用記) -->
-        <input type="button" value="" @click="event => notify(event)">
-        <input type="button" value="" @click="() => notify2('456')">
-        <input type="button" value="" @click="event => notify3('789',event)">
+        <input type="button" value="event => notify(event)" @click="event => notify(event)">
+        <input type="button" value="() => notify2('456')" @click="() => notify2('456')">
+        <input type="button" value="event => notify3('789',event)" @click="event => notify3('789',event)">
 
         <br>
-        <!-- .once只能觸發一次 -->
+        <!-- .once只能觸發一次（點第二次就沒用了） -->
         <input type="button" value="notify(once)" @click.once="notify">
-        <!-- .left .right .middle是指定滑鼠的按鍵 -->
+        <!-- .left .right .middle => 指定滑鼠的按鍵 -->
         <input type="button" value="notify(right)" @click.right="notify">
 
         <br>
         <!-- 
-            .prevent => event.prevent() 阻止瀏覽器執行事件的預設行為
-            .stop => event.stopPropagation()
+            .prevent => event.prevent() 阻止執行預設行為，例如下方範例：a標籤點擊後本來應該要跳到超連結但被阻止了
+            .stop => event.stopPropagation() 阻止冒泡
          -->
         <a href="https://x.com" @click.prevent="notify">X</a>
 
         <hr>
 
+        <!-- 新增東西至清單--------------------------------------- -->
         <!-- @keydown.enter為按下enter鍵要執行的 -->
         <input type="text" v-model="input" @keydown.enter="add">
         <ul>
@@ -53,20 +54,22 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         Vue.createApp({
+            // data() {} 放變數---------------------------------------
             data() {
                 return {
                     input: '',
                     list: []
                 }
             },
-            // method:{}裡面放這個vue會用到的function
+            // method:{}裡面放這個vue會用到的function-------------------------
             // 注意：method和data()同一層
             methods: {
                 notify() {
-                    // 因為上面(13、15行)直接把function名稱放在事件哩，所以可以直接用event
+                    // 因為上面(13、15行)直接把function名稱(notify)放在事件@click裡，預設有event物件可以直接做使用
                     console.log(event)
                     alert('123')
                 },
+                // 這個寫法沒有event可以用
                 notify2(text) {
                     alert(text)
                 },
@@ -75,9 +78,11 @@
                     alert(text)
                 },
                 add() {
+                    // 這個this指的是上面的data(){}
                     if (this.input.length === 0) return
                     // .push()用於將一個或多個元素添加到陣列的末尾
                     this.list.push(this.input)
+                    // 這個this是用來呼叫上面的function
                     this.notify2(this.input)
                     this.input = ''
                 }

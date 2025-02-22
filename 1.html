@@ -10,23 +10,26 @@
 <body>
     <!-- vue一定要建立一個div -->
     <div id="app">
-        <!-- {{}} 和 v-text 是顯示文字
+        <!-- {{}} 和 v-text 是顯示文字的方法
             {{}}自由度較高、較好用 -->
         <h1>{{text}}</h1>
         <h1 v-text="text"></h1>
+
+        <!-- img---------------------------------------------- -->
+        <!-- 這樣寫會顯示文字 -->
         <h1>{{img}}</h1>
         <h1 v-text="img"></h1>
+        <!-- v-html => 才會顯示html -->
+        <div v-html="img"></div>
 
-        <!-- v-html顯示html -->
-        <h1 v-html="img"></h1>
-
-        <!-- 判斷式，符合才出現在DOM -->
+        <!-- 判斷式v-if：符合才出現在DOM-------------------------------->
         <p v-if="num===10">數字10 (v-if)</p>
         <p v-else-if="num < 10">數字小於10 (v-else-if)</p>
         <p v-else>數字大於10 (v-else)</p>
-        <!-- 判斷式，不符合時display:none -->
+        <!-- 判斷式v-show：不符合時一樣會出現在html，但會變成display:none -->
         <p v-show="num===10">數字10 (v-show)</p>
 
+        <!-- 迴圈 v-for---------------------------------------------- -->
         <ul>
             <!-- v-for下在哪個標籤，那個標籤就會重複出現幾次 -->
             <!-- v-for=" 值 in 陣列" -->
@@ -35,10 +38,9 @@
             <li v-for="(value, index) in phones">{{index + 1}}: {{value}}</li>
         </ul>
 
-        <!--
-            v-if 和 v-for不能出現在同一個標籤上
-            所以要用 template 分開
-        -->
+        <!--v-if 和 v-for不能出現在同一個標籤上
+            所以要用 template 分開-->
+        <!-- <template></template>不會出現在html中 -->
         <ul>
             <template v-for="value in phones">
                 <li v-if="value==='Nothing'">{{value}}</li>
@@ -67,7 +69,7 @@
                     phones: ['Nothing', 'iPhone', 'Samsung']
                 }
             }
-        }).mount('#app')
+        }).mount('#app') // 表示掛載到頁面上的#app元素
     </script>
 </body>
 

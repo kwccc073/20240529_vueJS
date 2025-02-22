@@ -17,8 +17,10 @@
 </head>
 
 <body>
+    <!-- 此檔案是將vue的資料跟HTML的屬性做綁定 -->
     <div id="app">
-        <!-- v-bind: (簡寫為:) 綁定標籤的屬性 -->
+        <!-- 綁定標籤屬性------------------------------------ -->
+        <!-- v-bind:屬性 (簡寫為:屬性) => 標籤要綁定的屬性 -->
         <img v-bind:src="img" height="100">
         <img :src="img" height="100">
 
@@ -28,9 +30,10 @@
 
         <br>
 
-        <!-- style的綁定 -->
+        <!-- 綁定style--------------------------------------------------------------- -->
         <p :style="textStyle">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quisquam, magni?</p>
         <!-- 另一種寫法 -->
+        <!-- 可以寫三元：num===10? 'italic':'normal' -->
         <p :style="{
             color:textColor,
             textAlign,
@@ -40,7 +43,7 @@
         </p>
 
         <br>
-        <!-- 綁定class -->
+        <!-- 綁定class------------------------------------------------------------------- -->
         <p :class="textClassArray">Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, corporis.</p>
         <p :class="textClassObj">Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam, corporis.</p>
     </div>
@@ -59,21 +62,26 @@
                         url: 'https://x.com',
                         text: 'Twitter'
                     },
+                    // 綁定style-------------------------------
+                    // 寫法1
                     textStyle: {
+                        // 這裡的key一定要是CSS樣式名稱
                         color: 'lightblue',
-
                         // 要改為駝峰式命名
                         textAlign: 'center',
                         // 或是用''框起來
                         'background-color': 'gray'
                     },
+                    // 寫法2
                     textColor: 'pink',
                     textAlign: 'right',
 
-                    // 陣列裡的class都會套用
+                    // 綁定class-----------------------------------
+                    // 陣列寫法：所有的class都會套用
                     textClassArray: ['text-red', 'text-center'],
-                    // 物件只有值為true的class會被套用
+                    // 物件寫法：只有值為true的class會被套用
                     textClassObj: {
+                        // class名稱當作key
                         'text-red': true,
                         'text-center': false
                     },
