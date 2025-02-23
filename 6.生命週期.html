@@ -34,16 +34,17 @@
           console.log(this.$refs.btn.value)
         }
       },
-      // 創建階段
-      // Vue 的 JS 部分初始化完成，還沒有把 HTML 渲染在 DOM，所以沒有辦法抓到元素
+      // 生命週期：https://zh-hk.vuejs.org/guide/essentials/lifecycle.html--------------------------------------------------------------------------------------------------
+      // 創建階段：Vue 的 JS 部分初始化完成，還沒有把 HTML 渲染在 DOM （當vue處理完data、methods、computed之後、但還沒處理html）
+      // 所以沒有辦法抓到元素
       created() {
         console.log('created', document.getElementById('title')) // null
       },
-      // 掛載階段
-      // Vue 的 JS 和 HTML 部分初始化完成，才可以抓到元素
-
+      // 掛載階段：Vue 的 JS 和 HTML 部分初始化完成（處理完data、methods、computed，也處理html之後）
+      // 所以才可以抓到元素
       mounted() {
         console.log('mounted', document.getElementById('title')) //<h1 id="title" ref="title">aaa</h1>
+        // this.$refs.標籤上的ref => 取得元素
         // $ref 可以綁定元素，類似 document.getElementById()需要在 mounted 後使用
         console.log(this.$refs.title.innerText)
       }
